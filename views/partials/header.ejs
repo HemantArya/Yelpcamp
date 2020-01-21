@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+    <head></head>
+        <title>YelpCamp</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="/stylesheets/main.css">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+        </script>
+        <style>
+        .preloader{
+            background: #fff;
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 99;
+            overflow: hidden;
+        }
+        .boxes {
+            height: 32px;
+            width: 32px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform-origin: 50% 50%;
+            margin-top: 32px;
+            transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            margin: 0 auto;
+        }
+        .boxes .box {
+            width: 32px;
+            height: 32px;
+            top: 0px;
+            left: 0;
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+        .boxes .box:nth-child(1) {
+            transform: translate(100%, 0);
+            animation: box1 1s linear infinite;
+        }
+        .boxes .box:nth-child(2) {
+            transform: translate(0, 100%);
+            animation: box2 1s linear infinite;
+        }
+        .boxes .box:nth-child(3) {
+            transform: translate(100%, 100%);
+            animation: box3 1s linear infinite;
+        }
+        .boxes .box:nth-child(4) {
+            transform: translate(200%, 0);
+            animation: box4 1s linear infinite;
+        }
+        .boxes .box > div {
+            background: #dd3333;
+            --translateZ: 15.5px;
+            --rotateY: 0deg;
+            --rotateX: 0deg;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #dd3333;
+            top: auto;
+            right: auto;
+            bottom: auto;
+            left: auto;
+            transform: rotateY(var(--rotateY)) rotateX(var(--rotateX)) translateZ(var(--translateZ));
+        }
+        .boxes .box > div:nth-child(1) {
+            top: 0;
+            left: 0;
+            background: #dd3333;
+        }
+        .boxes .box > div:nth-child(2) {
+            background: #dd3333;
+            right: 0;
+            --rotateY: 90deg;
+        }
+        .boxes .box > div:nth-child(3) {
+            background: #dd3333e6;
+            --rotateX: -90deg;
+        }
+        .boxes .box > div:nth-child(4) {
+            background: #DBE3F4;
+            top: 0;
+            left: 0;
+            --translateZ: -90px;
+        }
+        @keyframes box1 {
+            0%,
+            50% {
+                transform: translate(100%, 0);
+            }
+            100% {
+                transform: translate(200%, 0);
+            }
+        }
+        @keyframes box2 {
+            0%{
+                transform: translate(0, 100%);
+            }
+            50% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(100%, 0);
+            }
+        }
+        @keyframes box3 {
+            0%,
+            50% {
+                transform: translate(100%, 100%);
+            }
+            100% {
+                transform: translate(0, 100%);
+            }
+        }
+        @keyframes box4 {
+            0%{
+                transform: translate(200%, 0);
+            }
+            50% {
+                transform: translate(200%, 100%);
+            }
+            100% {
+                transform: translate(100%, 100%);
+            }
+        }
+        @keyframes ripple {
+            0% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.75);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        </style>
+    </head>
+    <body>
+        <div class="preloader">
+            <div class="boxes">
+                <div class="box">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="box">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="box">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="box">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand">YelpCamp</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <% if(!currentUser) { %>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Sign Up</a></li>
+                        <% } else { %>
+                        <li><a href="#">Signed In As <%= currentUser.username %></a></li>
+                        <li><a href="/logout">Logout</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <% if(error && error.length > 0) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0) { %>
+                <div class="alert alert-success" role="alert">
+                    <%= success %>
+                </div>
+            <% } %>
+        </div>
